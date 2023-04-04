@@ -107,7 +107,7 @@ camunda-platform:
   optimize:
     enabled: false
   prometheusServiceMonitor:
-    enabled: false
+    enabled: true
   identity:
     enabled: false
 
