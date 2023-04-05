@@ -215,10 +215,6 @@ channel:
   requests:
     memory: "768M"
     cpu: "100m"
-  paygops:
-    host: ""
-  roster:
-    host: ""
   ingress:
     enabled: true
     path: "/channel"
@@ -934,3 +930,6 @@ ph_ee_integration_test:
   requests:
     cpu: "100m"
     memory: "2Gi"
+
+redis:
+  enabled: true
