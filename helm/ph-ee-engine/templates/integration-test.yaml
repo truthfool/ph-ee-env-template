@@ -27,7 +27,7 @@ spec:
             - name: "BULK-PROCESSOR_CONTACTPOINT"
               value: "{{ .Values.integration_test.bulk_processor.contactpoint }}"
             - name: "CHANNEL-CONNECTOR_CONTACTPOINT"
-              value: "{{ .Values.integration_test.channel_contactpoint.contactpoint }}"
+              value: "{{ .Values.integration_test.channel_connector.contactpoint }}"
             - name: "KAFKA_BROKERS"
               value: "{{ .Values.integration_test.kafka.brokers }}"
             - name: "KAFKA_TOPICS"
