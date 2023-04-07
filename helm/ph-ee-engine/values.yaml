@@ -746,7 +746,7 @@ connector_bulk:
   deployment:
     annotations: {}
 
-ph_ee_connector_gsma:
+ph-ee-connector_gsma:
   enabled: false
   replicas: 1
   image: ""
@@ -762,7 +762,7 @@ ph_ee_connector_gsma:
   deployment:
     annotations: {}
 
-ph_ee_connector_slcb:
+ph-ee-connector_slcb:
   enabled: false
   replicas: 1
   image: ""
@@ -916,7 +916,7 @@ keycloak:
     - name: KEYCLOAK_IMPORT
       value: /realm/kong-keycloak-realm.json
 
-ph_ee_integration_test:
+integration_test:
   enabled: false
   replicas: 1
   image: "419830066942.dkr.ecr.ap-south-1.amazonaws.com/phee-integration-test"
@@ -928,6 +928,31 @@ ph_ee_integration_test:
   requests:
     cpu: "100m"
     memory: "2Gi"
+  operations_app:
+    contactpoint: ""
+  bulk_processor:
+    contactpoint: ""
+  channel_connector:
+    contactpoint: ""
+  kafka:
+    brokers: ""
+    topics: ""
+  zeebe_operations:
+    contactpoint: ""
+    no_of_workflows: ""
+  max_retry_count: ""
+  retry_intervals: ""
+  defaults:
+    tenant: ""
+    authorization: ""
+  channel:
+    base_url: ""
+  loan:
+    base_url: ""
+  savings:
+    base_url: ""
+  gradle:
+    command: ""
 
 redis:
   enabled: true
