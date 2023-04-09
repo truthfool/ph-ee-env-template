@@ -114,7 +114,7 @@ spec:
             requests:
               memory: "{{ .Values.integration_test.requests.memory }}"
               cpu: "{{ .Values.integration_test.requests.cpu }}"
-          command: ["{{ .Values.integration_test.gradle.command }"]
+          command: ["{{ .Values.integration_test.gradle.command }}"]
       restartPolicy: Never
   backoffLimit: 4
 
