@@ -62,7 +62,7 @@ spec:
           image: jwilder/dockerize
           imagePullPolicy: IfNotPresent
           args:
-            - {{ .Values.integration_test.gradle.command }
+            - {{ .Values.integration_test.gradle.command }}
 
 ---
 apiVersion: batch/v1
