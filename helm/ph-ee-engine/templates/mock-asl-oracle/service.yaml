@@ -1,3 +1,4 @@
+{{- if .Values.mock_oracle.enabled -}}
 apiVersion: {{ .Values.service.apiversion }}
 kind: Service
 metadata:
@@ -15,3 +16,4 @@ spec:
     app: mock-oracle
   sessionAffinity: None
   type: ClusterIP
+{{- end }}

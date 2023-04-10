@@ -1,3 +1,4 @@
+{{- if .Values.operations.enabled -}}
 apiVersion: {{ .Values.configmap.apiversion }}
 kind: ConfigMap
 data:
@@ -11,3 +12,4 @@ data:
     auth.tenant phdefault
 metadata:
   name: ph-ee-operations-web-config
+{{- end }}
