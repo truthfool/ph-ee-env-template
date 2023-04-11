@@ -7,7 +7,7 @@ metadata:
   labels:
     app: ph-ee-integration-test
 spec:
-  replicas: {{ .Values.ph_ee_integration_test.replicas }}
+  replicas: {{ .Values.integration_test.replicas }}
   selector:
     matchLabels:
       app: ph-ee-integration-test
@@ -118,4 +118,4 @@ spec:
 #      restartPolicy: Never
 #  backoffLimit: 4
 
-  {{- end }}
+{{- end }}
