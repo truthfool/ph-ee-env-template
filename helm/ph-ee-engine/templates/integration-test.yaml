@@ -1,4 +1,4 @@
-{{- if .Values.ph_ee_integration_test.enabled -}}
+{{- if .Values.integration_test.enabled -}}
 
 apiVersion: {{ .Values.deployment.apiversion }}
 kind: Deployment

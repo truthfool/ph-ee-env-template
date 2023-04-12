@@ -14,7 +14,6 @@ camunda-platform:
 
   zeebe:
     enabled: true
-
     env:
       #    - name: ZEEBE_BROKER_BACKPRESSURE_ENABLED
       #      value: "false"
