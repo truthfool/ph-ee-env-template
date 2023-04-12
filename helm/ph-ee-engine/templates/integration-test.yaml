@@ -21,7 +21,7 @@ spec:
         - name: ph-ee-integration-test
           image: "{{ .Values.integration_test.image }}:{{ .Values.integration_test.imageTag }}"
           command: [ "/bin/bash" ]
-          args: [ "-c", '"{{ .Values.integration_test.gradle.command }}"' ]
+          args: [ "-c", '{{ .Values.integration_test.gradle.command }}' ]
           imagePullPolicy: "{{ .Values.integration_test.imagePullPolicy }}"
           env:
             - name: "OPERATIONS-APP_CONTACTPOINT"
