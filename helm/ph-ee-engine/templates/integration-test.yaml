@@ -61,7 +61,7 @@ spec:
         - name: run-tests
           image: jwilder/dockerize
           imagePullPolicy: IfNotPresent
-          command: ['/bin/sh', '-c']
+#          command: ['/bin/sh', '-c']
           args: ['"{{ .Values.integration_test.gradle.command }}"; ls']
 
 #---
