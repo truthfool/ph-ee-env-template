@@ -11,7 +11,6 @@ zeebe:
   enabled: true
   broker:
     contactpoint: "zeebe-zeebe-gateway:26500"
-
   image:
     repository: camunda/zeebe
     tag: 8.1.1
@@ -21,7 +20,6 @@ zeebe:
   cpuThreadCount: "2"
   ioThreadCount: "2"
   pvcSize: "10Gi"
-
   resources:
     requests:
       cpu: 100m
@@ -66,7 +64,6 @@ zeebe:
       value: 'false'
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_CREATETEMPLATE
       value: 'false'
-
   extraInitContainers:
     - name: init-ph-ee-kafka-exporter
       image: busybox:1.28
@@ -91,7 +88,7 @@ zeebe-gateway:
 #    clusterName: "zeebe-elasticsearch"
 
 prometheusServiceMonitor:
-  enabled: true
+  enabled: false
 identity:
   enabled: false
   hostname: ""
