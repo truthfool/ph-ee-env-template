@@ -7,6 +7,7 @@ camunda-platform:
   global:
     zeebe: "zeebe-zeebe"
     elasticsearch:
+      disableExporter: true
       host: "ph-ee-elasticsearch"
     identity:
       auth:
