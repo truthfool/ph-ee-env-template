@@ -848,7 +848,7 @@ wildcardhostname: ""
 tls: ""
 
 kong:
-  enabled: false
+  enabled: true
   image:
     repository: revomatico/docker-kong-oidc
     tag: "latest"
