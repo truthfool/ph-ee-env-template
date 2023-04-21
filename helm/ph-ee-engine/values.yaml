@@ -853,7 +853,7 @@ kong:
     repository: revomatico/docker-kong-oidc
     tag: "latest"
   env:
-    plugins: "bundled,oidc,request-transformer,http-log,cors"
+    plugins: "bundled,oidc,request-transformer,add-header,http-log"
   admin:
     enabled: true
     http:
@@ -863,7 +863,7 @@ kong:
     ingress:
       enabled: true
       ingressClassName: "kong"
-      hostname: kong-admin.mifos.io
+      hostname: admin-kong.sandbox.fynarfin.io
   extraObjects:
     - apiVersion: configuration.konghq.com/v1
       kind: KongClusterPlugin
@@ -876,9 +876,6 @@ kong:
       disabled: false # optionally disable the plugin in Kong
       plugin: request-transformer
       config:
-        add:
-          headers:
-            - "X-Client-IP"
         remove:
           headers:
             - cookie
@@ -915,8 +912,21 @@ kong:
         client_id: kong-oidc
         client_secret: xxxxxxxx # Generated on keyCloak
         realm: kong
-        discovery: https://keycloak.localhost/auth/realms/kong-oidc/.well-known/openid-configuration
+        discovery: https://keycloak.sandbox.fynarfin.io/auth/realms/kong-oidc/.well-known/openid-configuration
         scope: openid
+    - apiVersion: configuration.konghq.com/v1
+      kind: KongClusterPlugin
+      metadata:
+        name: add-header
+        annotations:
+          kubernetes.io/ingress.class: "kong"
+        labels:
+          global: "false"
+      disabled: false # optionally disable the plugin in Kong
+      plugin: add-header
+      config: # configuration for the add-header
+        header_name: X-Client-IP
+        header_value_template: "${request.get_forwarded_ip()}"
     - apiVersion: configuration.konghq.com/v1
       kind: KongClusterPlugin
       metadata:
