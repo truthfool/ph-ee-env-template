@@ -876,6 +876,9 @@ kong:
       disabled: false # optionally disable the plugin in Kong
       plugin: request-transformer
       config:
+        add:
+          headers:
+            - "X-Client-IP"
         remove:
           headers:
             - cookie
