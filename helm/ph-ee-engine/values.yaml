@@ -2,7 +2,6 @@ zeebe:
   broker:
     contactpoint: "zeebetest-zeebe-gateway:26500"
 
-
 camunda-platform:
   global:
     zeebe: "zeebe-zeebe"
@@ -35,37 +34,39 @@ camunda-platform:
       - name: ZEEBE_BROKER_BACKPRESSURE_VEGAS_BETA
         value: "8"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_EVENT
-        value: 'true'
+        value: "true"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_VARIABLE
-        value: 'true'
+        value: "true"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_PROCESSINSTANCE
-        value: 'true'
+        value: "true"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_PROCESS
-        value: 'true'
+        value: "true"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_INCIDENT
-        value: 'true'
+        value: "true"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_DEPLOYMENT
-        value: 'false'
+        value: "false"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_ERROR
-        value: 'false'
+        value: "false"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_JOB
-        value: 'false'
+        value: "false"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_VARIABLEDOCUMENT
-        value: 'false'
+        value: "false"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_WORKFLOWINSTANCE
-        value: 'false'
+        value: "false"
       - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_CREATETEMPLATE
-        value: 'false'
+        value: "false"
 
     extraInitContainers:
       - name: init-ph-ee-kafka-exporter
         image: busybox:1.28
-        command: ['/bin/sh', '-c']
-        args: ['wget -O /exporters/ph-ee-kafka-exporter.jar "https://fynarfin.io/images/exporter-1.1.1-SNAPSHOT.jar"; ls -al /exporters/']
+        command: ["/bin/sh", "-c"]
+        args:
+          [
+            'wget -O /exporters/ph-ee-kafka-exporter.jar "https://fynarfin.io/images/exporter-1.1.1-SNAPSHOT.jar"; ls -al /exporters/',
+          ]
         volumeMounts:
           - name: exporters
             mountPath: /exporters/
-
 
     image:
       repository: camunda/zeebe
@@ -111,9 +112,6 @@ camunda-platform:
   identity:
     enabled: false
 
-
-
-
 elasticsearch:
   enabled: true
   imageTag: 7.16.3
@@ -143,7 +141,6 @@ elasticsearch:
           name: elastic-credentials
           key: password
 
-
 kibana:
   enabled: true
   imageTag: 7.16.3
@@ -167,22 +164,21 @@ kibana:
       secretName: elastic-certificate-pem
       path: /usr/share/kibana/config/certs
   extraEnvs:
-    - name: 'ELASTICSEARCH_USERNAME'
+    - name: "ELASTICSEARCH_USERNAME"
       valueFrom:
         secretKeyRef:
           name: elastic-credentials
           key: username
-    - name: 'ELASTICSEARCH_PASSWORD'
+    - name: "ELASTICSEARCH_PASSWORD"
       valueFrom:
         secretKeyRef:
           name: elastic-credentials
           key: password
-    - name: 'KIBANA_ENCRYPTION_KEY'
+    - name: "KIBANA_ENCRYPTION_KEY"
       valueFrom:
         secretKeyRef:
           name: kibana
           key: encryptionkey
-
 
 channel:
   enabled: true
@@ -823,7 +819,6 @@ mock_oracle:
   deployment:
     annotations: {}
 
-
 wildcardhostname: ""
 
 tls: ""
@@ -834,7 +829,7 @@ keycloak:
     enabled: false
     ingressClassName: "kong"
     rules:
-      - host: 'keycloak.mifos.io'
+      - host: "keycloak.mifos.io"
     tls: []
   extraVolumes: |
     - name: realm-secret
@@ -891,14 +886,13 @@ redis:
   replica:
     replicaCount: 1
 
-
 kong:
   enabled: false
   image:
     repository: revomatico/docker-kong-oidc
     tag: "latest"
   env:
-    plugins: "bundled,oidc"
+    plugins: "bundled,oidc,request-transformer,add-header,http-log"
   admin:
     enabled: true
     http:
@@ -921,6 +915,9 @@ kong:
       disabled: false # optionally disable the plugin in Kong
       plugin: request-transformer
       config:
+        add:
+          headers:
+            - "X-Client-IP"
         remove:
           headers:
             - cookie
@@ -940,7 +937,7 @@ kong:
           - "*"
         credentials: true
         max_age: 3600
-        exposed_headers :
+        exposed_headers:
           - "X-Auth-Token"
         preflight_continue: false
     - apiVersion: configuration.konghq.com/v1
@@ -955,7 +952,43 @@ kong:
       plugin: oidc
       config: # configuration for the plugin
         client_id: kong-oidc
-        client_secret: xxxxxxxx  # Generated on keyCloak
+        client_secret: xxxxxxxx # Generated on keyCloak
         realm: kong
-        discovery: https://keycloak.localhost/auth/realms/kong-oidc/.well-known/openid-configuration
+        discovery: https://keycloak.sandbox.fynarfin.io/auth/realms/kong-oidc/.well-known/openid-configuration
         scope: openid
+    - apiVersion: configuration.konghq.com/v1
+      kind: KongClusterPlugin
+      metadata:
+        name: add-header
+        annotations:
+          kubernetes.io/ingress.class: "kong"
+        labels:
+          global: "false"
+      disabled: false # optionally disable the plugin in Kong
+      plugin: add-header
+      config: # configuration for the add-header
+        header_name: X-Client-IP
+        header_value_template: "${request.get_forwarded_ip()}"
+    - apiVersion: configuration.konghq.com/v1
+      kind: KongClusterPlugin
+      metadata:
+        name: http-log
+        annotations:
+          kubernetes.io/ingress.class: "kong"
+        labels:
+          global: "false"
+      disabled: false # optionally disable the plugin in Kong
+      plugin: http-log
+      config: # configuration for the add-header
+        http_endpoint: https://webhook.site/8702fa12-6f1e-4c0e-a6c1-481192899380
+        method: POST,GET
+        content_type: application/json
+        flush_timeout: 2
+        keepalive: 60
+        timeout: 10000
+        retry_count: 10
+        retry_delay: 5000
+        retries: 5
+        log_bodies: true
+        request_headers:
+          - X-Forwarded-For
