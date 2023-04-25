@@ -892,7 +892,7 @@ kong:
     repository: revomatico/docker-kong-oidc
     tag: "latest"
   env:
-    plugins: "bundled,oidc,request-transformer,add-header,http-log"
+    plugins: "bundled,oidc,request-transformer,cors,http-log"
   admin:
     enabled: true
     http:
@@ -902,7 +902,7 @@ kong:
     ingress:
       enabled: true
       ingressClassName: "kong"
-      hostname: kong-admin.mifos.io
+      hostname: kong-admin.sandbox.fynarfin.io
   extraObjects:
     - apiVersion: configuration.konghq.com/v1
       kind: KongClusterPlugin
