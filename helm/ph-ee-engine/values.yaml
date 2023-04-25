@@ -884,7 +884,7 @@ integration_test:
 redis:
   enabled: true
   replica:
-    replicaCount: 1
+    replicaCount: 0
 
 kong:
   enabled: false
@@ -915,9 +915,9 @@ kong:
       disabled: false # optionally disable the plugin in Kong
       plugin: request-transformer
       config:
-        add:
+        replace:
           headers:
-            - "X-Client-IP"
+            X-Client-IP: $remote_addr
         remove:
           headers:
             - cookie
@@ -959,24 +959,11 @@ kong:
     - apiVersion: configuration.konghq.com/v1
       kind: KongClusterPlugin
       metadata:
-        name: add-header
-        annotations:
-          kubernetes.io/ingress.class: "kong"
-        labels:
-          global: "false"
-      disabled: false # optionally disable the plugin in Kong
-      plugin: add-header
-      config: # configuration for the add-header
-        header_name: X-Client-IP
-        header_value_template: "${request.get_forwarded_ip()}"
-    - apiVersion: configuration.konghq.com/v1
-      kind: KongClusterPlugin
-      metadata:
         name: http-log
         annotations:
           kubernetes.io/ingress.class: "kong"
         labels:
-          global: "false"
+          global: "true"
       disabled: false # optionally disable the plugin in Kong
       plugin: http-log
       config: # configuration for the add-header
