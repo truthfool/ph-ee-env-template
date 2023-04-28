@@ -598,7 +598,7 @@ zeebe_ops:
     annotations: {}
 
 importer_es:
-  enabled: false
+  enabled: true
   replicas: 1
   image: ""
   imageTag: "v1.3.1"
@@ -673,7 +673,7 @@ kafka:
       deployTime: "{{ .Values.deployTime }}"
 
 importer_rdbms:
-  enabled: false
+  enabled: true
   replicas: 1
   image: ""
   imageTag: "v1.2.0"
