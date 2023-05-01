@@ -869,9 +869,11 @@ integration_test:
   kafka:
     brokers: ""
     topics: ""
+    consumerTimeoutMs: ""
   zeebe_operations:
     contactpoint: ""
     no_of_workflows: ""
+    thread-count: ""
   max_retry_count: ""
   retry_intervals: ""
   defaults:
