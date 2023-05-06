@@ -1,7 +1,6 @@
 zeebe:
-    broker:
-      contactpoint: "zeebe-zeebe-gateway:26500"
-      
+  broker:
+    contactpoint: "zeebe-zeebe-gateway:26500"
 
 zeebe-cluster-helm:
   global:
@@ -9,10 +8,9 @@ zeebe-cluster-helm:
     elasticsearch:
       host: "ph-ee-elasticsearch"
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port: '9600'
-      prometheus.io/path: '/metrics'    
-
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9600"
+    prometheus.io/path: "/metrics"
 
   image:
     repository: camunda/zeebe
@@ -24,15 +22,15 @@ zeebe-cluster-helm:
   cpuThreadCount: "2"
   ioThreadCount: "2"
   pvcSize: "10Gi"
-  pvcAccessModes: [ "ReadWriteOnce" ]
+  pvcAccessModes: ["ReadWriteOnce"]
 
   resources:
     requests:
       cpu: 100m
 
   env:
-#    - name: ZEEBE_BROKER_BACKPRESSURE_ENABLED
-#      value: "false"
+    #    - name: ZEEBE_BROKER_BACKPRESSURE_ENABLED
+    #      value: "false"
     - name: ZEEBE_BROKER_EXECUTION_METRICS_EXPORTER_ENABLED
       value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME
@@ -50,28 +48,27 @@ zeebe-cluster-helm:
     - name: ZEEBE_BROKER_BACKPRESSURE_VEGAS_BETA
       value: "8"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_EVENT
-      value: 'true'
+      value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_VARIABLE
-      value: 'true'
+      value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_PROCESSINSTANCE
-      value: 'true'
+      value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_PROCESS
-      value: 'true'
+      value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_INCIDENT
-      value: 'true'
+      value: "true"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_DEPLOYMENT
-      value: 'false'
+      value: "false"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_ERROR
-      value: 'false'
+      value: "false"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_JOB
-      value: 'false'
+      value: "false"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_VARIABLEDOCUMENT
-      value: 'false'
+      value: "false"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_WORKFLOWINSTANCE
-      value: 'false'
+      value: "false"
     - name: ZEEBE_BROKER_EXPORTERS_KAFKA_ARGS_INDEX_CREATETEMPLATE
-      value: 'false'
-
+      value: "false"
 
   gateway:
     replicas: 1
@@ -147,7 +144,6 @@ elasticsearch:
           name: elastic-credentials
           key: password
 
-
 kibana:
   enabled: true
   imageTag: 7.16.3
@@ -171,22 +167,21 @@ kibana:
       secretName: elastic-certificate-pem
       path: /usr/share/kibana/config/certs
   extraEnvs:
-    - name: 'ELASTICSEARCH_USERNAME'
+    - name: "ELASTICSEARCH_USERNAME"
       valueFrom:
         secretKeyRef:
           name: elastic-credentials
           key: username
-    - name: 'ELASTICSEARCH_PASSWORD'
+    - name: "ELASTICSEARCH_PASSWORD"
       valueFrom:
         secretKeyRef:
           name: elastic-credentials
           key: password
-    - name: 'KIBANA_ENCRYPTION_KEY'
+    - name: "KIBANA_ENCRYPTION_KEY"
       valueFrom:
         secretKeyRef:
           name: kibana
           key: encryptionkey
-
 
 channel:
   enabled: true
@@ -251,20 +246,20 @@ configmap:
 operationsmysql:
   fullnameOverride: "operationsmysql"
   image:
-      tag: "5.7"
-      debug: false
+    tag: "5.7"
+    debug: false
   auth:
-      database: "tenants"
-      username: "mifos"
-      password: "password"
-      rootPassword: "4ET6ywqlGt"
+    database: "tenants"
+    username: "mifos"
+    password: "password"
+    rootPassword: "4ET6ywqlGt"
   initdbScripts:
-      setup.sql: |-
-        CREATE DATABASE IF NOT EXISTS phdefault;
-        CREATE DATABASE IF NOT EXISTS messagegateway;
-        GRANT ALL ON *.* TO 'root'@'%';
-        GRANT ALL PRIVILEGES ON messagegateway.* TO 'mifos';
-        GRANT ALL PRIVILEGES ON phdefault.* TO 'mifos';
+    setup.sql: |-
+      CREATE DATABASE IF NOT EXISTS phdefault;
+      CREATE DATABASE IF NOT EXISTS messagegateway;
+      GRANT ALL ON *.* TO 'root'@'%';
+      GRANT ALL PRIVILEGES ON messagegateway.* TO 'mifos';
+      GRANT ALL PRIVILEGES ON phdefault.* TO 'mifos';
 
 ph_ee_connector_ams_mifos:
   enabled: false
@@ -292,7 +287,7 @@ ph_ee_connector_ams_mifos:
     annotations: {}
     backend: {}
   deployment:
-    annotations: {}    
+    annotations: {}
 
 ph_ee_connector_mojaloop:
   enabled: false
@@ -343,11 +338,11 @@ operations_app:
   tenants: ""
   token_client_channel_secret: ""
   datasource:
-      username: "mifos"
-      password: "password"
-      host: "operationsmysql"
-      port: 3306
-      schema: "tenants"
+    username: "mifos"
+    password: "password"
+    host: "operationsmysql"
+    port: 3306
+    schema: "tenants"
   limits:
     memory: "512M"
     cpu: "500m"
@@ -440,7 +435,7 @@ mpesa:
       client_key: "0pLxbN83FrOl5Nd0Fh9Zi5BQlMxSL2n5"
       client_secret: "YzuGNoJxeub8ZC6d"
       pass_key: "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
-  
+
   paybill:
     accountHoldingInstitutionId: "default"
     paygops:
@@ -485,7 +480,7 @@ roster_connector:
     auth_header: ""
   deployment:
     annotations: {}
-  
+
 paygops_connector:
   enabled: false
   replicas: 1
@@ -664,8 +659,8 @@ kafka:
   image: "spotify/kafka"
   imagePullPolicy: "Always"
   advertised:
-      host: "kafka"
-      port: "9092"
+    host: "kafka"
+    port: "9092"
   limits:
     memory: "512M"
     cpu: "500m"
@@ -673,8 +668,8 @@ kafka:
     memory: "512M"
     cpu: "100m"
   deployment:
-      annotations:
-        deployTime: "{{ .Values.deployTime }}"
+    annotations:
+      deployTime: "{{ .Values.deployTime }}"
 
 importer_rdbms:
   enabled: true
@@ -685,11 +680,11 @@ importer_rdbms:
   LOGGING_LEVEL_ROOT: "INFO"
   LOGGING_PATTERN_CONSOLE: "%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n"
   datasource:
-      username: "mifos"
-      password: "password"
-      host: "operationsmysql"
-      port: 3306
-      schema: "tenants"
+    username: "mifos"
+    password: "password"
+    host: "operationsmysql"
+    port: 3306
+    schema: "tenants"
   limits:
     memory: "512M"
     cpu: "500m"
@@ -713,9 +708,9 @@ connector_bulk:
   tenants: "ibank-usa,ibank-india"
   bucket_name: "paymenthub-ee-dev"
   operations_app:
-      contactpoint: "https://ops-bk.sandbox.fynarfin.io/"
-      endpoints:
-        batch_transaction: "/api/v1/batch/transactions"
+    contactpoint: "https://ops-bk.sandbox.fynarfin.io/"
+    endpoints:
+      batch_transaction: "/api/v1/batch/transactions"
   config:
     partylookup:
       enable: false
@@ -827,7 +822,6 @@ mock_oracle:
   deployment:
     annotations: {}
 
-
 wildcardhostname: ""
 
 tls: ""
@@ -841,6 +835,7 @@ kong:
     plugins: "bundled,oidc,request-transformer,cors,http-log"
   admin:
     enabled: true
+    loadBalancerClass: "kong"
     http:
       enabled: true
     tls:
@@ -875,15 +870,15 @@ kong:
         annotations:
           kubernetes.io/ingress.class: "kong"
         labels:
-          global: "true"    
+          global: "true"
       disabled: false # optionally disable the plugin in Kong
       plugin: cors
-      config: 
-        origins: 
+      config:
+        origins:
           - "*"
         credentials: true
         max_age: 3600
-        exposed_headers : 
+        exposed_headers:
           - "X-Auth-Token"
         preflight_continue: false
     - apiVersion: configuration.konghq.com/v1
@@ -897,8 +892,8 @@ kong:
       disabled: false # optionally disable the plugin in Kong
       plugin: oidc
       config: # configuration for the plugin
-        client_id: kong-oidc 
-        client_secret: xxxxxxxx  # Generated on keyCloak
+        client_id: kong-oidc
+        client_secret: xxxxxxxx # Generated on keyCloak
         realm: kong
         discovery: https://keycloak.localhost/auth/realms/kong-oidc/.well-known/openid-configuration
         scope: openid
@@ -931,7 +926,7 @@ keycloak:
     enabled: false
     ingressClassName: "kong"
     rules:
-      - host: 'keycloak.mifos.io'
+      - host: "keycloak.mifos.io"
     tls: []
   extraVolumes: |
     - name: realm-secret
