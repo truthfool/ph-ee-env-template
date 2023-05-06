@@ -293,8 +293,6 @@ ph_ee_connector_ams_mifos:
     backend: {}
   deployment:
     annotations: {}    
-  deployment:
-    annotations: {}
 
 ph_ee_connector_mojaloop:
   enabled: false
@@ -916,7 +914,6 @@ kong:
       plugin: http-log
       config: # configuration for the add-header
         http_endpoint: https://webhook.site/8702fa12-6f1e-4c0e-a6c1-481192899380
-        method: POST,GET
         content_type: application/json
         flush_timeout: 2
         keepalive: 60
