@@ -106,6 +106,10 @@ spec:
         - path: "{{ .Values.channel.ingress.path }}"
           pathType: Prefix
           backend:
+        server:
+          location / {
+            access_log /var/log/nginx/access.log main;
+            log_format main '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "client_ip=$remote_addr"';}
 {{- if .Values.channel.ingress.backend }}
 {{ toYaml .Values.channel.ingress.backend | indent 14 }}
 {{- end }}
@@ -133,6 +137,11 @@ spec:
         - path: "{{ .Values.channel.ingress.path }}"
           pathType: Prefix
           backend:
+        server:
+          location / {
+            access_log /var/log/nginx/access.log main;
+            log_format main '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "client_ip=$remote_addr"';}
+          
 {{- if .Values.channel.ingress.backend }}
 {{ toYaml .Values.channel.ingress.stub_backend | indent 14 }}
 {{- end }}
